@@ -14,17 +14,17 @@ template_theme1 = 'vapor'
 template_theme2 = 'flatly'
 
 
-df = pd.read_csv('LiveLongerData.csv')
-state_options = [{'label': x, 'value': x} for x in df['Sexos Afetados'].unique()]
+df = pd.read_csv('gasolina.csv')
+state_options = [{'label': x, 'value': x} for x in df['ESTADO'].unique()]
 
 
 app.layout = dbc.Container([
     dbc.Row([
         dbc.Col([
             ThemeSwitchAIO(aio_id = 'theme', themes = [url_theme1, url_theme2]),
-            html.H3('Fatores de Longevidade de Vida'),
+            html.H3('Preço x Estado'),
             dcc.Dropdown(
-                id = 'sexos',
+                id = 'estados',
                 value = [state['label'] for state in state_options[:3]],
                 multi = True,
                 options = state_options
@@ -43,7 +43,7 @@ app.layout = dbc.Container([
         dbc.Col([
             dbc.Row([
                 dcc.Dropdown(
-                id = 'sexo1',
+                id = 'estado1',
                 value = state_options[0]['label'],
                 options = state_options
                 ), # pode usar o sm e o md aqui também
@@ -55,7 +55,7 @@ app.layout = dbc.Container([
         dbc.Col([
             dbc.Row([
                 dcc.Dropdown(
-                id = 'sexo2',
+                id = 'estado2',
                 value = state_options[1]['label'],
                 options = state_options
                 ),
@@ -69,16 +69,16 @@ app.layout = dbc.Container([
 
 @app.callback(
     Output('line_graph', 'figure'),
-    Input('sexos', 'value'),
+    Input('estados', 'value'),
     Input(ThemeSwitchAIO.ids.switch('theme'), 'value') 
 )
-def line(sexos, toggle):
+def line(estados, toggle):
     templates = template_theme1 if toggle else template_theme2
 
     df_data = df.copy(deep = True) # isso é muito pesado mano, bora tentar melhorar isso
-    mask = df_data['Sexos Afetados'].isin(sexos)
+    mask = df_data['ESTADO'].isin(estados)
 
-    fig = px.line(df_data[mask], x = 'Fator', y = 'Anos Ganhos/Perdidos', color = 'Sexos Afetados', template = templates)
+    fig = px.line(df_data[mask], x = 'DATA', y = 'PREÇO MÉDIO REVENDA', color = 'ESTADO', template = templates)
 
     return fig
 
@@ -86,31 +86,31 @@ def line(sexos, toggle):
 @app.callback(
     Output('indicator1', 'figure'),
     Output('indicator2', 'figure'),
-    Input('sexo1', 'value'),
-    Input('sexo2', 'value'),
+    Input('estado1', 'value'),
+    Input('estado2', 'value'),
     Input(ThemeSwitchAIO.ids.switch('theme'), 'value') 
 )
-def indicators(sexo1, sexo2, toggle):
+def indicators(estado1, estado2, toggle):
     templates = template_theme1 if toggle else template_theme2
 
     df_data = df.copy(deep = True)
 
-    data_sexo1 = df_data[df_data['Sexos Afetados'].isin([sexo1])]
-    data_sexo2 = df_data[df_data['Sexos Afetados'].isin([sexo2])]
+    data_estado1 = df_data[df_data['ESTADO'].isin([estado1])]
+    data_estado2 = df_data[df_data['ESTADO'].isin([estado2])]
 
-    iterable = [(sexo1, data_sexo1), (sexo2, data_sexo2)]
+    iterable = [(estado1, data_estado1), (estado2, data_estado2)]
     indicators = []
 
-    for sexo, data in iterable:
+    for estado, data in iterable:
         fig = go.Figure()
         fig.add_trace(go.Indicator(
             mode = 'number+delta',
-            title = {'text': sexo},
-            value = data.at[data.index[-1], 'Anos Ganhos/Perdidos'],
-            number = {'valueformat': '.2f'},
-            delta = {'relative': True, 'valueformat': '.1%', 'reference': data.at[data.index[0], 'Anos Ganhos/Perdidos']}
+            title = {'text': estado},
+            value = data.at[data.index[-1], 'PREÇO MÉDIO REVENDA'],
+            number = {'prefix': 'R$', 'valueformat': '.2f'},
+            delta = {'relative': True, 'valueformat': '.1%', 'reference': data.at[data.index[0], 'PREÇO MÉDIO REVENDA']}
         ))
-        
+
         fig.update_layout(template = templates)
         indicators.append(fig)
     
@@ -119,32 +119,32 @@ def indicators(sexo1, sexo2, toggle):
 
 @app.callback(
     Output('box1', 'figure'),
-    Input('sexo1', 'value'),
+    Input('estado1', 'value'),
     Input(ThemeSwitchAIO.ids.switch('theme'), 'value') 
 )
-def box1(sexo1, toggle):
+def box1(estado1, toggle):
     templates = template_theme1 if toggle else template_theme2
 
     df_data = df.copy(deep = True)
-    data_sexo = df_data[df_data['Sexos Afetados'].isin([sexo1])]
+    data_estado = df_data[df_data['ESTADO'].isin([estado1])]
 
-    fig = px.box(data_sexo, x = 'Anos Ganhos/Perdidos', template = templates, points='all', title=sexo1)
+    fig = px.box(data_estado, x = 'PREÇO MÉDIO REVENDA', template = templates, points='all', title=estado1)
 
     return fig
 
 
 @app.callback(
     Output('box2', 'figure'),
-    Input('sexo2', 'value'),
+    Input('estado2', 'value'),
     Input(ThemeSwitchAIO.ids.switch('theme'), 'value') 
 )
-def box2(sexo2, toggle):
+def box2(estado2, toggle):
     templates = template_theme1 if toggle else template_theme2
 
     df_data = df.copy(deep = True)
-    data_sexo = df_data[df_data['Sexos Afetados'].isin([sexo2])]
+    data_estado = df_data[df_data['ESTADO'].isin([estado2])]
 
-    fig = px.box(data_sexo, x = 'Anos Ganhos/Perdidos', template = templates, points='all', title=sexo2)
+    fig = px.box(data_estado, x = 'PREÇO MÉDIO REVENDA', template = templates, points='all', title=estado2)
 
     return fig
 
