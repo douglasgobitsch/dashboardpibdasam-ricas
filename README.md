@@ -11,7 +11,7 @@ O repositório utilizado para o projeto foi Population and GDP (South and North 
 Foi utilizado a linguagem Python e como principal recurso a biblioteca Dash para criação do Dashboard, que permite a visualização dos gráficos na web. Em conjuto com o Dahs, também foi utilizado a biblioteca Pandas para leitura e manipulação do arquivo utilizado e a biblioteca Plotly para a criação dos gráficos e suas manipulações
 
 # Autor
-[Cauã Guerreiro Britto Medeiros]https://github.com/cauagbm11 e [Douglas Gobitsch de Almeida Mello]https://github.com/douglasgobitsch
+[Cauã Guerreiro Britto Medeiros](https://github.com/cauagbm11) e [Douglas Gobitsch de Almeida Mello](https://github.com/douglasgobitsch)
 
 
 
