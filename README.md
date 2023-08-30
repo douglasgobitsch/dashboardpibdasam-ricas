@@ -5,3 +5,8 @@ Este projeto analisa e demonstra o PIB e a população dos países da América d
 # Repositório de dados
 
 O repositório utilizado para o projeto foi Population and GDP (South and North America) e pode ser encontrado em: (https://www.kaggle.com/datasets/ivanbyone/population-and-gdp-south-and-north-america) que está disponível no Keaggle. 
+
+#Ferramentas para o projeto
+
+Foi utilizado como principal a biblioteca Dash para criação do Dashboard, que permite a visualização dos gráficos na web. Em conjuto com o Dahs, também foi utilizado a biblioteca Pandas para leitura e manipulação do arquivo utilizado e a biblioteca Plotly para a criação dos gráficos e suas manipulações
+
