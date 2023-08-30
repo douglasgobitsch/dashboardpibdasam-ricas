@@ -21,7 +21,36 @@ for col in categorical_columns:
 
 app = Dash(__name__)
 
-app.layout = html.Div([
+colors = {
+    'background': '#FFDEAD',
+    'text': '#191970'
+}
+
+fig = px.bar(df, x="Year", y="GDP (USD)", color="Country", barmode="group")
+opcoes = list(df['Country'].unique())
+opcoes.append("Todos os Países")
+
+fig.update_layout(
+    plot_bgcolor=colors['background'],
+    paper_bgcolor=colors['background'],
+    font_color=colors['text']
+)
+
+app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
+    html.H1(children= 'PIB das Américas',
+    style={'color': colors['text']}
+    ), 
+    html.H2(children= 'Uma dashboard feita por Douglas Gobitsch e Cauã Guerreiro.',
+    style={'color': colors['text']}
+    ),
+    
+    dcc.Dropdown(opcoes, value='Todos os Países', id='lista_países'),
+    
+    dcc.Graph(
+    id='example-graph',
+    figure=fig
+    ),
+   
     dcc.Graph(id='graph-with-slider'),
     dcc.Slider(
         df['Year'].min(),
@@ -32,6 +61,17 @@ app.layout = html.Div([
         id='Year-slider'
     )
 ])
+@app.callback(
+    Output('example-graph', 'figure'),
+    Input('lista_países', 'value')
+)
+def update_output(value):
+    if value == "Todos os Países":
+        fig = px.bar(df, x="Year", y="GDP (USD)", color="Country", barmode="group")
+    else:
+        tabela_filtrada = df.loc[df['Country']==value, :]
+        fig = px.bar(tabela_filtrada, x="Year", y="GDP (USD)", color="Country", barmode="group")
+    return fig
 
 
 @callback(
@@ -47,7 +87,11 @@ def update_figure(selected_Year):
     fig.update_layout(transition_duration=500)
 
     return fig
-
+fig.update_layout(
+    plot_bgcolor=colors['background'],
+    paper_bgcolor=colors['background'],
+    font_color=colors['text']
+)
 
 if __name__ == '__main__':
     app.run(debug=True)
