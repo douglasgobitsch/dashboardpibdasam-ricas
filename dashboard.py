@@ -1,152 +1,53 @@
-from dash import html, dcc, Input, Output
+from dash import Dash, dcc, html, Input, Output, callback
 import plotly.express as px
-import plotly.graph_objects as go
+
 import pandas as pd
 
-from app import *
-from dash_bootstrap_templates import ThemeSwitchAIO
+df = pd.read_csv('Data_America.csv')
 
+# Tratar valores nulos em colunas numéricas (preenchendo com a média)
+numeric_columns = df.select_dtypes(include=['float64', 'int64']).columns
+for col in numeric_columns:
+    mean_value = df[col].mean()
+    df[col].fillna(mean_value, inplace=True)
 
-url_theme1 = dbc.themes.VAPOR
-url_theme2 = dbc.themes.FLATLY
+# Tratar valores nulos em colunas categóricas (preenchendo com o valor mais frequente)
+categorical_columns = df.select_dtypes(include=['object']).columns
+for col in categorical_columns:
+    most_common_value = df[col].mode()[0]
+    df[col].fillna(most_common_value, inplace=True)
 
-template_theme1 = 'vapor'
-template_theme2 = 'flatly'
+# O DataFrame 'df' agora está com os valores nulos tratados
 
+app = Dash(__name__)
 
-df = pd.read_csv('gasolina.csv')
-state_options = [{'label': x, 'value': x} for x in df['ESTADO'].unique()]
-
-
-app.layout = dbc.Container([
-    dbc.Row([
-        dbc.Col([
-            ThemeSwitchAIO(aio_id = 'theme', themes = [url_theme1, url_theme2]),
-            html.H3('Preço x Estado'),
-            dcc.Dropdown(
-                id = 'estados',
-                value = [state['label'] for state in state_options[:3]],
-                multi = True,
-                options = state_options
-            ),
-        ])
-    ]),
-
-
-    dbc.Row([
-        dbc.Col([
-            dcc.Graph(id = 'line_graph')
-        ])
-    ]),
-
-    dbc.Row([
-        dbc.Col([
-            dbc.Row([
-                dcc.Dropdown(
-                id = 'estado1',
-                value = state_options[0]['label'],
-                options = state_options
-                ), # pode usar o sm e o md aqui também
-                dcc.Graph(id = 'indicator1'),
-                dcc.Graph(id = 'box1')
-            ])
-        ]),
-
-        dbc.Col([
-            dbc.Row([
-                dcc.Dropdown(
-                id = 'estado2',
-                value = state_options[1]['label'],
-                options = state_options
-                ),
-                dcc.Graph(id = 'indicator2'),
-                dcc.Graph(id = 'box2')
-            ])
-        ])
-    ])
+app.layout = html.Div([
+    dcc.Graph(id='graph-with-slider'),
+    dcc.Slider(
+        df['Year'].min(),
+        df['Year'].max(),
+        step=None,
+        value=df['Year'].min(),
+        marks={str(Year): str(Year) for Year in df['Year'].unique()},
+        id='Year-slider'
+    )
 ])
 
 
-@app.callback(
-    Output('line_graph', 'figure'),
-    Input('estados', 'value'),
-    Input(ThemeSwitchAIO.ids.switch('theme'), 'value') 
-)
-def line(estados, toggle):
-    templates = template_theme1 if toggle else template_theme2
+@callback(
+    Output('graph-with-slider', 'figure'),
+    Input('Year-slider', 'value'))
+def update_figure(selected_Year):
+    filtered_df = df[df.Year == selected_Year]
 
-    df_data = df.copy(deep = True) # isso é muito pesado mano, bora tentar melhorar isso
-    mask = df_data['ESTADO'].isin(estados)
+    fig = px.scatter(filtered_df, x="GDP (USD)", y="Population ",
+                     size="Country area (km^2)", color="Continent", hover_name="Country",
+                     log_x=True, size_max=55)
 
-    fig = px.line(df_data[mask], x = 'DATA', y = 'PREÇO MÉDIO REVENDA', color = 'ESTADO', template = templates)
-
-    return fig
-
-
-@app.callback(
-    Output('indicator1', 'figure'),
-    Output('indicator2', 'figure'),
-    Input('estado1', 'value'),
-    Input('estado2', 'value'),
-    Input(ThemeSwitchAIO.ids.switch('theme'), 'value') 
-)
-def indicators(estado1, estado2, toggle):
-    templates = template_theme1 if toggle else template_theme2
-
-    df_data = df.copy(deep = True)
-
-    data_estado1 = df_data[df_data['ESTADO'].isin([estado1])]
-    data_estado2 = df_data[df_data['ESTADO'].isin([estado2])]
-
-    iterable = [(estado1, data_estado1), (estado2, data_estado2)]
-    indicators = []
-
-    for estado, data in iterable:
-        fig = go.Figure()
-        fig.add_trace(go.Indicator(
-            mode = 'number+delta',
-            title = {'text': estado},
-            value = data.at[data.index[-1], 'PREÇO MÉDIO REVENDA'],
-            number = {'prefix': 'R$', 'valueformat': '.2f'},
-            delta = {'relative': True, 'valueformat': '.1%', 'reference': data.at[data.index[0], 'PREÇO MÉDIO REVENDA']}
-        ))
-
-        fig.update_layout(template = templates)
-        indicators.append(fig)
-    
-    return indicators
-
-
-@app.callback(
-    Output('box1', 'figure'),
-    Input('estado1', 'value'),
-    Input(ThemeSwitchAIO.ids.switch('theme'), 'value') 
-)
-def box1(estado1, toggle):
-    templates = template_theme1 if toggle else template_theme2
-
-    df_data = df.copy(deep = True)
-    data_estado = df_data[df_data['ESTADO'].isin([estado1])]
-
-    fig = px.box(data_estado, x = 'PREÇO MÉDIO REVENDA', template = templates, points='all', title=estado1)
+    fig.update_layout(transition_duration=500)
 
     return fig
 
-
-@app.callback(
-    Output('box2', 'figure'),
-    Input('estado2', 'value'),
-    Input(ThemeSwitchAIO.ids.switch('theme'), 'value') 
-)
-def box2(estado2, toggle):
-    templates = template_theme1 if toggle else template_theme2
-
-    df_data = df.copy(deep = True)
-    data_estado = df_data[df_data['ESTADO'].isin([estado2])]
-
-    fig = px.box(data_estado, x = 'PREÇO MÉDIO REVENDA', template = templates, points='all', title=estado2)
-
-    return fig
 
 if __name__ == '__main__':
-    app.run_server(debug = True, port='8051')
+    app.run(debug=True)
