@@ -5,6 +5,8 @@ import pandas as pd
 
 df = pd.read_csv('Data_America.csv')
 
+df.fillna(0, inplace=True)
+
 # Tratar valores nulos em colunas numéricas (preenchendo com a média)
 numeric_columns = df.select_dtypes(include=['float64', 'int64']).columns
 for col in numeric_columns:
@@ -30,19 +32,12 @@ fig = px.bar(df, x="Year", y="GDP (USD)", color="Country", barmode="group")
 opcoes = list(df['Country'].unique())
 opcoes.append("Todos os Países")
 
-fig.update_layout(
-    plot_bgcolor=colors['background'],
-    paper_bgcolor=colors['background'],
-    font_color=colors['text']
-)
 
-app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
+app.layout = html.Div([
     html.H1(children= 'PIB das Américas',
-    style={'color': colors['text']}
-    ), 
+    style={'textAlign' : 'center'}), 
     html.H2(children= 'Uma dashboard feita por Douglas Gobitsch e Cauã Guerreiro.',
-    style={'color': colors['text']}
-    ),
+    style={'textAlign' : 'center'}),
     
     dcc.Dropdown(opcoes, value='Todos os Países', id='lista_países'),
     
@@ -87,11 +82,7 @@ def update_figure(selected_Year):
     fig.update_layout(transition_duration=500)
 
     return fig
-fig.update_layout(
-    plot_bgcolor=colors['background'],
-    paper_bgcolor=colors['background'],
-    font_color=colors['text']
-)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
