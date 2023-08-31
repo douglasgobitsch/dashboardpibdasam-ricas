@@ -4,11 +4,13 @@ Este projeto analisa e demonstra o PIB e a população dos países da América d
 
 # Exigências do Orientador
 
- Objetivo do projeto
+
+	Ojetivo do projeto
+
 
 O objetivo deste projeto é permitir que os alunos apliquem seus conhecimentos de Estatística e comecem a entrar na área de Data Science, utilizando a biblioteca Pandas para análise de dados e a biblioteca Dash para criar um dashboard interativo. Os alunos selecionarão um conjunto de dados do Kaggle, realizarão análises exploratórias, aplicarão tratamentos de dados e, por fim, criarão um dashboard que apresente visualizações significativas dos dados.
 
-Passos do Projeto:
+	Passos do Projeto
 
 -Seleção dos Dados: Os alunos devem escolher conjuntos de dados relevantes do Kaggle, que sejam adequados para a criação de um dashboard informativo e interativo.
 
@@ -22,13 +24,13 @@ Passos do Projeto:
 
 # Repositório de dados
 
-O repositório utilizado para o projeto foi Population and GDP (South and North America) e pode ser encontrado em: (https://www.kaggle.com/datasets/ivanbyone/population-and-gdp-south-and-north-america) que está disponível no Keaggle. 
+O repositório utilizado para o projeto foi [Population and GDP (South and North America)](https://www.kaggle.com/datasets/ivanbyone/population-and-gdp-south-and-north-america) que está disponível no Kaggle. 
 
 # Ferramentas para o projeto
 
-Foi utilizado a linguagem Python e como principal recurso a biblioteca Dash para criação do Dashboard, que permite a visualização dos gráficos na web. Em conjuto com o Dash, também foi utilizado a biblioteca Pandas para leitura e manipulação do arquivo utilizado e a biblioteca Plotly para a criação dos gráficos e suas manipulações
+Foi utilizado a linguagem Python e como principal recurso a biblioteca Dash para criação do Dashboard, que permite a visualização dos gráficos na web. Em conjuto com o Dash, também foi utilizado a biblioteca Pandas para leitura e manipulação do arquivo utilizado e a biblioteca Plotly para a criação dos gráficos e suas manipulações.
 
-# Autor
+# Autores
 [Cauã Guerreiro Britto Medeiros](https://github.com/cauagbm11) e [Douglas Gobitsch de Almeida Mello](https://github.com/douglasgobitsch)
 
 
