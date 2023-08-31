@@ -1,4 +1,4 @@
-ID,Year,Country,Country area (km^2),Continent,Population ,GDP (USD)
+ID,Ano,País,Área do País,Continente,População,PIB (Dólares)
 1,2000,Argentina,2766890.0,South America,37070774,284203750000.0
 2,2001,Argentina,2766890.0,South America,37480493,268696750000.0
 3,2002,Argentina,2766890.0,South America,37885028,97724004251.86
@@ -229,29 +229,29 @@ ID,Year,Country,Country area (km^2),Continent,Population ,GDP (USD)
 228,2020,Uruguay,176220.0,South America,3429086,53666908479.56
 229,2021,Uruguay,176220.0,South America,3426260,61412268248.95
 230,2022,Uruguay,176220.0,South America,3422794,71177146197.5
-231,2000,Guiana (France),91000.0,South America,160004,
-232,2001,Guiana (France),91000.0,South America,166833,
-233,2002,Guiana (France),91000.0,South America,174529,
-234,2003,Guiana (France),91000.0,South America,182822,
-235,2004,Guiana (France),91000.0,South America,191188,
-236,2005,Guiana (France),91000.0,South America,199171,
-237,2006,Guiana (France),91000.0,South America,206460,
-238,2007,Guiana (France),91000.0,South America,213062,
-239,2008,Guiana (France),91000.0,South America,219105,
-240,2009,Guiana (France),91000.0,South America,224792,
-241,2010,Guiana (France),91000.0,South America,230291,
-242,2011,Guiana (France),91000.0,South America,235712,
-243,2012,Guiana (France),91000.0,South America,241039,
-244,2013,Guiana (France),91000.0,South America,246380,
-245,2014,Guiana (France),91000.0,South America,251938,
-246,2015,Guiana (France),91000.0,South America,257920,
-247,2016,Guiana (France),91000.0,South America,264435,
-248,2017,Guiana (France),91000.0,South America,271537,
-249,2018,Guiana (France),91000.0,South America,279094,
-250,2019,Guiana (France),91000.0,South America,286912,
-251,2020,Guiana (France),91000.0,South America,294774,
-252,2021,Guiana (France),91000.0,South America,302945,
-253,2022,Guiana (France),91000.0,South America,311343,
+231,2000,Guiana (France),91000.0,South America,"160,004",
+232,2001,Guiana (France),91000.0,South America,"166,833",
+233,2002,Guiana (France),91000.0,South America,"174,529",
+234,2003,Guiana (France),91000.0,South America,"182,822",
+235,2004,Guiana (France),91000.0,South America,"191,188",
+236,2005,Guiana (France),91000.0,South America,"199,171",
+237,2006,Guiana (France),91000.0,South America,"206,460",
+238,2007,Guiana (France),91000.0,South America,"213,062",
+239,2008,Guiana (France),91000.0,South America,"219,105",
+240,2009,Guiana (France),91000.0,South America,"224,792",
+241,2010,Guiana (France),91000.0,South America,"230,291",
+242,2011,Guiana (France),91000.0,South America,"235,712",
+243,2012,Guiana (France),91000.0,South America,"241,039",
+244,2013,Guiana (France),91000.0,South America,"246,380",
+245,2014,Guiana (France),91000.0,South America,"251,938",
+246,2015,Guiana (France),91000.0,South America,"257,920",
+247,2016,Guiana (France),91000.0,South America,"264,435",
+248,2017,Guiana (France),91000.0,South America,"271,537",
+249,2018,Guiana (France),91000.0,South America,"279,094",
+250,2019,Guiana (France),91000.0,South America,"286,912",
+251,2020,Guiana (France),91000.0,South America,"294,774",
+252,2021,Guiana (France),91000.0,South America,"302,945",
+253,2022,Guiana (France),91000.0,South America,"311,343",
 254,2000,Chile,756950.0,South America,15351799,78249883995.63
 255,2001,Chile,756950.0,South America,15523978,71517267767.74
 256,2002,Chile,756950.0,South America,15693790,70295232513.05
